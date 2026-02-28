@@ -1,0 +1,13 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}Wanted Shop{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+	{% include 'components/header.html' %}
+	{% block content %}{% endblock %}
+	{% include 'components/footer.html' %}
+</body>
