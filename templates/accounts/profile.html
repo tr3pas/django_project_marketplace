@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Профіль користувача{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Профіль користувача</h2>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ profile.user.username }}</h5>
+                    <p class="card-text"><strong>Email:</strong> {{ profile.user.email }}</p>
+                    <p class="card-text"><strong>Ім'я:</strong> {{ profile.user.first_name }}</p>
+                    <p class="card-text"><strong>Прізвище:</strong> {{ profile.user.last_name }}</p>
+                    {% if profile.address %}
+                        <hr>
+                        <h6>Адреса:</h6>
+                        <p class="mb-0">{{ profile.address.street }}, {{ profile.address.city }}</p>
+                        <p class="mb-0">{{ profile.address.postal_code }}, {{ profile.address.country }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <a href="{% url 'account:edit_profile' %}" class="btn btn-primary">Редагувати профіль</a>
+            <a href="{% url 'account:delete_profile' %}" class="btn btn-danger ms-2">Видалити профіль</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

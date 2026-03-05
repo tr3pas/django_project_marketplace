@@ -1,0 +1,31 @@
+{% load static %}
+<header class="bg-black text-white py-3 mb-4">
+	<div class="container">
+		<div class="d-flex flex-wrap align-items-center justify-content-between">
+			<a class="navbar-brand fw-bold text-white" href="{% url 'products:home' %}">Wanted Shop</a>
+			<ul class="nav list-inline mb-0">
+				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:home' %}">Головна</a></li>
+				{% for category in categories %}
+				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:product_list_by_category' category.id %}">{{ category.name }}</a></li>
+				{% endfor %}
+			</ul>
+			<ul class="navbar-nav ms-3">
+				{% if user.is_authenticated %}
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'account:profile' %}">Профіль</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'account:logout' %}">Вийти</a>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'account:login' %}">Увійти</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'account:register' %}">Реєстрація</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</header>

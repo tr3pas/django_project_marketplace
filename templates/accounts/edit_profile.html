@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Редагування профілю{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Редагування профілю</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="card mb-3">
+                    <div class="card-header">Дані користувача</div>
+                    <div class="card-body">
+                        {{ user_form.as_p }}
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header">Профіль</div>
+                    <div class="card-body">
+                        {{ profile_form.as_p }}
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header">Адреса</div>
+                    <div class="card-body">
+                        {{ address_form.as_p }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Зберегти зміни</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

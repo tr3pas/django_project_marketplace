@@ -18,7 +18,7 @@ class CategoryDetailView(DetailView):
 # Головна
 def home(request):
 	categories = Category.objects.all()
-	return render(request, 'project/home.html', {'categories': categories})
+	return render(request, 'product/home.html', {'categories': categories})
 
 # Список продуктів
 def product_list(request, category_id=None):
@@ -29,10 +29,10 @@ def product_list(request, category_id=None):
 		products = Product.objects.all()
 		category = None
 	categories = Category.objects.all()
-	return render(request, 'project/product_list.html', {'products': products, 'category': category, 'categories': categories})
+	return render(request, 'product/product_list.html', {'products': products, 'category': category, 'categories': categories})
 
 # Деталі продукту
 def product_details(request, product_id):
 	product = get_object_or_404(Product, id=product_id)
 	categories = Category.objects.all()
-	return render(request, 'project/product_details.html', {'product': product, 'categories': categories})
+	return render(request, 'product/product_details.html', {'product': product, 'categories': categories})
