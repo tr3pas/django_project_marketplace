@@ -80,8 +80,8 @@ def edit_profile_view(request):
 def delete_profile_view(request):
     if request.method == 'POST':
         user = request.user
-        logout(request)
+        logout(request)    
         user.delete()
-        messages.success(request, 'Ваш акаунт видалено.')
+        messages.success(request, 'Ваш акаунт успішно видалено.')
         return redirect('products:home')
     return render(request, 'accounts/delete_profile.html')

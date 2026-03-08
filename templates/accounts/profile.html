@@ -20,7 +20,10 @@
                 </div>
             </div>
             <a href="{% url 'account:edit_profile' %}" class="btn btn-primary">Редагувати профіль</a>
-            <a href="{% url 'account:delete_profile' %}" class="btn btn-danger ms-2">Видалити профіль</a>
+            <form method="post" action="{% url 'account:delete_profile' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger ms-2">Видалити профіль</button>
+            </form>
         </div>
     </div>
 </div>

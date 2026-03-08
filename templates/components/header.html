@@ -1,4 +1,5 @@
 {% load static %}
+
 <header class="bg-black text-white py-3 mb-4">
 	<div class="container">
 		<div class="d-flex flex-wrap align-items-center justify-content-between">
@@ -9,23 +10,33 @@
 				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:product_list_by_category' category.id %}">{{ category.name }}</a></li>
 				{% endfor %}
 			</ul>
-			<ul class="navbar-nav ms-3">
-				{% if user.is_authenticated %}
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:profile' %}">Профіль</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:logout' %}">Вийти</a>
-				</li>
-				{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:login' %}">Увійти</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'account:register' %}">Реєстрація</a>
-				</li>
-				{% endif %}
-			</ul>
+			<div class="d-flex align-items-center gap-3">
+				<a href="{% url 'cart:cart_details' %}" class="position-relative text-white" title="Кошик">
+					<span class="fs-4">🛒</span>
+					{% if cart_items_count and cart_items_count > 0 %}
+					<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+						{{ cart_items_count }}
+					</span>
+					{% endif %}
+				</a>
+				<ul class="navbar-nav ms-2">
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'account:profile' %}">Профіль</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'account:logout' %}">Вийти</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'account:login' %}">Увійти</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'account:register' %}">Реєстрація</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
 		</div>
 	</div>
 </header>

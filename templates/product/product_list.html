@@ -17,9 +17,14 @@
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.description|truncatewords:15 }}</p>
                     <p class="card-text"><strong>Ціна:</strong> {{ product.price }} грн</p>
-                    <a href="{% url 'product_details' product.id %}" class="btn btn-primary">Детальніше</a>
-                </div>
-            </div>
+                    <a href="{% url 'products:product_details' product.id %}" class="btn btn-primary">Детальніше</a>
+                    <form method="post" action="{% url 'cart:add_cart' product.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-success mt-2">Додати в кошик</button>
+                    </form>
+                </div>               
+            </div>            
         </div>
         {% empty %}
         <p>Товарів не знайдено.</p>
