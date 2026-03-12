@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 
 from .models import CartItem, Cart
 from products.models import Product
+from products.views import _get_category_context
 
 def get_cart(request):
     if request.user.is_authenticated:
@@ -18,7 +19,7 @@ def get_cart_items(request):
         cart = get_cart(request)
         items = []
         total = 0
-        for item in CartItem.objects.filter(cart=cart).select_related('product'):
+        for item in CartItem.objects.select_related('product','cart','product__category').filter(cart=cart):
             item.subtotal = item.product.price * item.quantity
             items.append(item)
             total += item.subtotal
@@ -27,7 +28,7 @@ def get_cart_items(request):
         cart = request.session.get('cart', {})
         items = []
         total = 0
-        for product in Product.objects.filter(id__in=cart.keys()):
+        for product in Product.objects.select_related('category').filter(id__in=cart.keys()):
             quantity = cart.get(str(product.id), 0)
             subtotal = product.price * quantity
             item = type('CartItem', (), {'product': product, 'quantity': quantity, 'subtotal': subtotal})
@@ -54,17 +55,15 @@ def add_cart(request, product_id):
 
 def cart_details(request):
     cart_items, total = get_cart_items(request)
-    return render(request, 'cart/cart_details.html', {
-        'cart_items': cart_items,
-        'total': total,
-    })
+    context = _get_category_context(request)
+    return render(request, 'cart/cart_details.html', {**context, 'cart_items': cart_items, 'total': total})
 
 
 @require_POST
 def remove_from_cart(request, product_id):
     if request.user.is_authenticated:
         cart = get_cart(request)
-        CartItem.objects.filter(cart=cart, product_id=product_id).delete()
+        CartItem.objects.select_related('product','cart','product__category').filter(cart=cart, product_id=product_id).delete()
     else:
         cart = request.session.get('cart', {})
         cart.pop(str(product_id), None)
@@ -77,7 +76,7 @@ def update_cart(request, product_id):
     quantity = max(1, int(request.POST.get('quantity', 1)))
     if request.user.is_authenticated:
         cart = get_cart(request)
-        CartItem.objects.filter(cart=cart, product_id=product_id).update(quantity=quantity)
+        CartItem.objects.select_related('product','cart','product__category').filter(cart=cart, product_id=product_id).update(quantity=quantity)
     else:
         cart = request.session.get('cart', {})
         if str(product_id) in cart:

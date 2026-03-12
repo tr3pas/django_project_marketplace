@@ -18,10 +18,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('products.urls')),
     path('account/', include('account.urls')),
     path('cart/', include(('cart.urls'), namespace='cart')),
+    path('order/', include(('order.urls'), namespace='order')),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]

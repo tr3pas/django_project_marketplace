@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import LoginForm, RegistrationForm, UserForm, ProfileForm, AddressForm
 from .models import Profile, Address
-
+from products.views import _get_category_context
 
 def login_view(request):
     if request.method == 'POST':
@@ -14,7 +14,8 @@ def login_view(request):
             return redirect('account:profile')
     else:
         form = LoginForm(request)
-    return render(request, 'accounts/login.html', {'form': form})
+    context = _get_category_context(request)
+    return render(request, 'accounts/login.html', {**context, 'form': form})    
 
 
 def logout_view(request):
@@ -32,13 +33,15 @@ def register_view(request):
             return redirect('products:home')
     else:
         form = RegistrationForm()
-    return render(request, 'accounts/register.html', {'form': form})
+    context = _get_category_context(request)
+    return render(request, 'accounts/register.html', {**context, 'form': form})
 
 
 @login_required
 def profile_view(request):
     profile = get_object_or_404(Profile, user=request.user)
-    return render(request, 'accounts/profile.html', {'profile': profile})
+    context = _get_category_context(request)
+    return render(request, 'accounts/profile.html', {**context, 'profile': profile})
 
 
 @login_required
@@ -68,8 +71,9 @@ def edit_profile_view(request):
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=profile)
         address_form = AddressForm(instance=address)
-
+    context = _get_category_context(request)
     return render(request, 'accounts/edit_profile.html', {
+        **context,
         'user_form': user_form,
         'profile_form': profile_form,
         'address_form': address_form,
@@ -84,4 +88,5 @@ def delete_profile_view(request):
         user.delete()
         messages.success(request, 'Ваш акаунт успішно видалено.')
         return redirect('products:home')
-    return render(request, 'accounts/delete_profile.html')
+    context = _get_category_context(request)
+    return render(request, 'accounts/delete_profile.html', {**context})
