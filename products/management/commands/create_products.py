@@ -7,10 +7,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # 1. Створення категорій
         categories_data = [
-            {"name": "Одяг", "icon": "👕", "description": "Стильний одяг для будь-якої погоди."},
-            {"name": "Взуття", "icon": "👟", "description": "Зручне взуття для спорту та відпочинку."},
-            {"name": "Аксесуари", "icon": "🕶️", "description": "Деталі, що створюють ваш образ."},
-            {"name": "Сумки", "icon": "👜", "description": "Практичні та модні сумки і рюкзаки."},
+            {"name": "Одяг", "description": "Стильний одяг для будь-якої погоди."},
+            {"name": "Взуття", "description": "Зручне взуття для спорту та відпочинку."},
+            {"name": "Аксесуари", "description": "Деталі, що створюють ваш образ."},
+            {"name": "Сумки", "description": "Практичні та модні сумки і рюкзаки."},
         ]
 
         categories_dict = {}
@@ -18,7 +18,6 @@ class Command(BaseCommand):
             category, created = Category.objects.get_or_create(
                 name=cat_data["name"],
                 defaults={
-                    "icon": cat_data["icon"],
                     "description": cat_data["description"]
                 }
             )
@@ -27,20 +26,20 @@ class Command(BaseCommand):
         # 2. Дані для продуктів (по 6 на категорію)
         products_data = [
             # Одяг
-            {"name": "Худі Oversize", "category": "Одяг", "price": 1200.00, "description": "М'яке худі з начосом."},
+            {"name": "Худі Oversize", "category": "Одяг", "price": 1200.00, "description": "М'яке худі з начосом.", },
             {"name": "Джинси Straight", "category": "Одяг", "price": 1500.00, "description": "Класичні сині джинси."},
-            {"name": "Футболка Basic White", "category": "Одяг", "price": 450.00, "description": "Базова бавовняна футболка."},
+            {"name": "Футболка Свобода Слова", "category": "Одяг", "price": 450.00, "description": "Базова бавовняна футболка.", "rating": 4.5, "image": "products/clothes/white_t_shirt.jpg"},
             {"name": "Куртка-бомбер", "category": "Одяг", "price": 2800.00, "description": "Стильна демісезонна куртка."},
-            {"name": "Светр вовняний", "category": "Одяг", "price": 1900.00, "description": "Теплий светр грубої в'язки."},
+            {"name": "Светр вовняний", "category": "Одяг", "price": 1900.00, "description": "Теплий светр грубої в'язки.", "rating": 4.6, "image": "products/clothes/black_shirt.jpg"},
             {"name": "Шорти Cargo", "category": "Одяг", "price": 850.00, "description": "Зручні шорти з кишенями."},
 
             # Взуття
-            {"name": "Кеди Canvas", "category": "Взуття", "price": 1100.00, "description": "Легке повсякденне взуття."},
-            {"name": "Кросівки Run Max", "category": "Взуття", "price": 3200.00, "description": "Професійні кросівки для бігу."},
-            {"name": "Лофери шкіряні", "category": "Взуття", "price": 2500.00, "description": "Класичне взуття для офісу."},
-            {"name": "Черевики Chelsea", "category": "Взуття", "price": 3800.00, "description": "Високі шкіряні черевики."},
+            {"name": "Кеди Converse", "category": "Взуття", "price": 1100.00, "description": "Легке повсякденне взуття." , "rating": 4.2, "image": "products/shoes/converse.jpg"},
+            {"name": "Nike Air Max 95", "category": "Взуття", "price": 3200.00, "description": "Професійні кросівки для бігу.", "rating": 4.8, "image": "products/shoes/air_max_95.jpg"},
+            {"name": "Лофери шкіряні", "category": "Взуття", "price": 2500.00, "description": "Класичне взуття для офісу.", "rating": 4.3, "image": "products/shoes/loafers.jpg"},
+            {"name": "Чоботи Jumbo Geobasket", "category": "Взуття", "price": 3800.00, "description": "Високі шкіряні черевики.", "rating": 4.7, "image": "products/shoes/jumbo_geobasket.jpg"},
             {"name": "Сандалі Sport", "category": "Взуття", "price": 950.00, "description": "Зручні літні сандалі."},
-            {"name": "Сліпони Minimal", "category": "Взуття", "price": 1300.00, "description": "Взуття без шнурівок."},
+            {"name": "Сліпони Minimal", "category": "Взуття", "price": 1300.00, "description": "Взуття без шнурівок.", "rating": 4.0, "image": "products/shoes/minimal_sandals.jpg"},
 
             # Аксесуари
             {"name": "Окуляри Aviator", "category": "Аксесуари", "price": 600.00, "description": "Сонцезахисні окуляри."},
@@ -67,8 +66,8 @@ class Command(BaseCommand):
                     "category": categories_dict[prod_data["category"]],
                     "description": prod_data["description"],
                     "price": prod_data["price"],
-                    #"rating": 10, # Стандартне значення 
-                    #"image": f"products/{prod_data['name'].replace(' ', '_').lower()}.jpg"
+                    "rating": prod_data.get("rating", 0.0),
+                    "image": prod_data.get("image", None)
                 }
             )
 

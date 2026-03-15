@@ -8,10 +8,8 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-6">
-            {% if product.images.all %}
-                {% for image in product.images.all %}
-                    <img src="{{ image.image.url }}" class="img-fluid mb-2" alt="{{ image.alt_text }}">
-                {% endfor %}
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid mb-2" alt="{{ product.name }}">
             {% endif %}
         </div>
         <div class="col-md-6">
@@ -20,7 +18,7 @@
             <p><strong>Ціна:</strong> {{ product.price }} грн</p>
             <p><strong>Колір:</strong> {{ product.color }}</p>
             <p><strong>Розмір:</strong> {{ product.size }}</p>
-            <a href="/" class="btn btn-primary">Назад до магазину</a>
+            <a href="/" class="btn btn-dark">Назад до магазину</a>
         </div>
     </div>
 </div>

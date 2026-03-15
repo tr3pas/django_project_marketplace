@@ -9,16 +9,19 @@
     <div class="row">
         {% for product in products %}
         <div class="col-md-4">
-            <div class="card">
-                {% if product.images.first %}
-                <img src="{{ product.images.first.image.url }}" class="card-img-top" alt="{{ product.images.first.alt_text }}">
+            <div class="card h-90 mb-4">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <img src="/static/media/products/isnt_picture.jpg" class="card-img-top" style="height: 200px; object-fit: cover;">
                 {% endif %}
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">{{ product.description|truncatewords:15 }}</p>
                     <p class="card-text"><strong>Ціна:</strong> {{ product.price }} грн</p>
-                    <a href="{% url 'products:product_details' product.id %}" class="btn btn-primary">Детальніше</a>
-                    <form method="post" action="{% url 'cart:add_cart' product.id %}">
+                    <p class="card-text"><strong>Рейтинг:</strong> {{ product.rating }} / 5.00</p>
+                    <a href="{% url 'products:product_details' product.id %}" class="btn btn-dark">Детальніше</a>
+                    <form method="post" action="{% url 'cart:add_cart' product.id %}" class="card-body d-flex flex-column mt-auto">
                         {% csrf_token %}
                         <input type="hidden" name="quantity" value="1">
                         <button type="submit" class="btn btn-success mt-2">Додати в кошик</button>

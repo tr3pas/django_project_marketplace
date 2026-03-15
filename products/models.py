@@ -20,15 +20,10 @@ class Product(models.Model):
     size = models.CharField(max_length=30, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
+
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name
 
-
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='product_images/')
-    alt_text = models.CharField(max_length=255, blank=True)
-
-    def __str__(self):
-        return f"Image for {self.product.name}"
