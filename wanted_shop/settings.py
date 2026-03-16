@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  # Завантажує змінні середовища з .env файлу
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,14 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jo&=a4__cd--s=%dl=dashm0eiz*gto8h@3+1_na(yrd_hv+e#'
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-default-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG: bool = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
-
+print(ALLOWED_HOSTS)
 
 
 # Application definition
@@ -43,10 +46,15 @@ INSTALLED_APPS = [
 
 
     'products',
-    'account',
+    'accounts',
     'cart',
     'order',
     'debug_toolbar',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
 ]
 
@@ -58,7 +66,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 INTERNAL_IPS = ['127.0.0.1']
@@ -113,6 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SITE_ID = 1
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -139,3 +149,52 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "static" / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv("CLIENT_ID_GOOGLE", ""),
+            'secret': os.getenv("CLIENT_SECRET_GOOGLE", ""),
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+    }
+    
+}
+
+LOGIN_URL = 'accounts:login'
+LOGOUT_URL = 'accounts:logout'
+LOGIN_REDIRECT_URL = 'products:home'
+LOGOUT_REDIRECT_URL = 'products:home'
+
+_REDIS_URL = os.getenv("REDIS_URL", "")
+
+if _REDIS_URL:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": _REDIS_URL,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+            "TIMEOUT": 60 * 30,  # 15 хвилин за замовчуванням
+        }
+    }
+
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "dnd-shop",
+            "TIMEOUT": 60 * 15,  # 15 хвилин за замовчуванням
+        }
+    }

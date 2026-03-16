@@ -1,7 +1,12 @@
 
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView
 from .models import Category, Product
+from .context_proccesor import _get_category_context
+from django.core.cache import cache
+
+CATEGORY_CACHE_KEY = 'categories_cache'
+CATEGORY_CACHE_TIL = 60 * 60  # 1 година в секундах
 
 # Категорії
 class CategoryListView(ListView):
@@ -14,29 +19,35 @@ class CategoryDetailView(DetailView):
 	template_name = 'project/category.html'
 	context_object_name = 'category'
 
-def _get_category_context(request):
-	categories = Category.objects.all()
-	return {'categories': categories}
-
-
-# Головна
+# Головна сторінка
 def home(request):
-	categories = Category.objects.all()
+
+	categories = cache.get(CATEGORY_CACHE_KEY)
+	if not categories:
+		categories = list(Category.objects.all())
+		cache.set(CATEGORY_CACHE_KEY, categories, CATEGORY_CACHE_TIL)
 	return render(request, 'product/home.html', {'categories': categories})
 
 # Список продуктів
 def product_list(request, category_id=None):
 	if category_id:
-		products = Product.objects.select_related('category',).filter(category_id=category_id)
-		category = get_object_or_404(Category, id=category_id)
+		products = cache.get(f'products_category_{category_id}')
+		if not products:
+			products = list(Product.objects.select_related('category',).filter(category_id=category_id))
+			cache.set(f'products_category_{category_id}', products, CATEGORY_CACHE_TIL)
 	else:
-		products = Product.objects.select_related('category').all()
-		category = None
+		products = cache.get('products_all')
+		if not products:
+			products = list(Product.objects.select_related('category').all())
+			cache.set('products_all', products, CATEGORY_CACHE_TIL)
 	context = _get_category_context(request)
-	return render(request, 'product/product_list.html', {**context, 'products': products, 'category': category})
+	return render(request, 'product/product_list.html', {**context, 'products': products})
 
 # Деталі продукту
 def product_details(request, product_id):
-	product = get_object_or_404(Product, id=product_id)
+	product = cache.get(f'product_{product_id}')
+	if not product:
+		product = get_object_or_404(Product, id=product_id)
+		cache.set(f'product_{product_id}', product, CATEGORY_CACHE_TIL)
 	context = _get_category_context(request)
 	return render(request, 'product/product_details.html', {**context, 'product': product})

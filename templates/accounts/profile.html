@@ -18,11 +18,14 @@
                         <p class="mb-0">{{ profile.address.postal_code }}, {{ profile.address.country }}</p>
                     {% endif %}
                 </div>
+
+                
             </div>
-            <a href="{% url 'account:edit_profile' %}" class="btn btn-primary">Редагувати профіль</a>
-            <form method="post" action="{% url 'account:delete_profile' %}">
+            <a href="{% url 'accounts:edit_profile' %}" class="btn btn-dark">Редагувати профіль</a>
+            <br><br>
+            <form method="post" action="{% url 'accounts:delete_profile' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger ms-2">Видалити профіль</button>
+                <button type="submit" class="btn btn-danger ">Видалити профіль</button>
             </form>
         </div>
     </div>

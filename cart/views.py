@@ -5,6 +5,7 @@ from .models import CartItem, Cart
 from products.models import Product
 from products.views import _get_category_context
 
+
 def get_cart(request):
     if request.user.is_authenticated:
         cart, _ = Cart.objects.get_or_create(user=request.user)
@@ -31,7 +32,7 @@ def get_cart_items(request):
         for product in Product.objects.select_related('category').filter(id__in=cart.keys()):
             quantity = cart.get(str(product.id), 0)
             subtotal = product.price * quantity
-            item = type('CartItem', (), {'product': product, 'quantity': quantity, 'subtotal': subtotal})
+            item = {'product': product, 'quantity': quantity, 'subtotal': subtotal}
             items.append(item)
             total += subtotal
         return items, total

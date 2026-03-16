@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from cart.models import CartItem, Cart
 from .models import Order, OrderItem
 from products.models import Product
-from account.models import Address
+from accounts.models import Address
 from .forms import CheckoutForm
 from django.contrib import messages
 from products.views import _get_category_context

@@ -4,14 +4,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import LoginForm, RegistrationForm, UserForm, ProfileForm, AddressForm
 from .models import Profile, Address
-from products.views import _get_category_context
+from products.context_proccesor import _get_category_context
+from django.core.cache import cache
+
+CATEGORY_CACHE_TIL = 60 * 30  # 30 хвилин в секундах
 
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('account:profile')
+            return redirect('accounts:profile')
     else:
         form = LoginForm(request)
     context = _get_category_context(request)
@@ -39,7 +42,10 @@ def register_view(request):
 
 @login_required
 def profile_view(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    profile = cache.get(f'profile_{request.user.id}')
+    if not profile:
+        profile = get_object_or_404(Profile, user=request.user)
+        cache.set(f'profile_{request.user.id}', profile, CATEGORY_CACHE_TIL)
     context = _get_category_context(request)
     return render(request, 'accounts/profile.html', {**context, 'profile': profile})
 
@@ -66,7 +72,7 @@ def edit_profile_view(request):
             profile_form.save()
             address_form.save()
             messages.success(request, 'Профіль успішно оновлено!')
-            return redirect('account:profile')
+            return redirect('accounts:profile')
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=profile)

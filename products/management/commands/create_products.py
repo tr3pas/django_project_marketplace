@@ -39,7 +39,7 @@ class Command(BaseCommand):
             {"name": "Лофери шкіряні", "category": "Взуття", "price": 2500.00, "description": "Класичне взуття для офісу.", "rating": 4.3, "image": "products/shoes/loafers.jpg"},
             {"name": "Чоботи Jumbo Geobasket", "category": "Взуття", "price": 3800.00, "description": "Високі шкіряні черевики.", "rating": 4.7, "image": "products/shoes/jumbo_geobasket.jpg"},
             {"name": "Сандалі Sport", "category": "Взуття", "price": 950.00, "description": "Зручні літні сандалі."},
-            {"name": "Сліпони Minimal", "category": "Взуття", "price": 1300.00, "description": "Взуття без шнурівок.", "rating": 4.0, "image": "products/shoes/minimal_sandals.jpg"},
+            {"name": "Сліпони Minimal", "category": "Взуття", "price": 1300.00, "description": "Взуття без шнурівок.", "rating": 4.0},
 
             # Аксесуари
             {"name": "Окуляри Aviator", "category": "Аксесуари", "price": 600.00, "description": "Сонцезахисні окуляри."},
