@@ -176,7 +176,7 @@ LOGOUT_URL = 'accounts:logout'
 LOGIN_REDIRECT_URL = 'products:home'
 LOGOUT_REDIRECT_URL = 'products:home'
 
-_REDIS_URL = os.getenv("REDIS_URL", "")
+_REDIS_URL = os.getenv("REDIS_URL", None)
 
 if _REDIS_URL:
     CACHES = {
