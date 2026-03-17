@@ -6,9 +6,10 @@ from .forms import LoginForm, RegistrationForm, UserForm, ProfileForm, AddressFo
 from .models import Profile, Address
 from products.context_proccesor import _get_category_context
 from django.core.cache import cache
+from django_ratelimit.decorators import ratelimit
 
 CATEGORY_CACHE_TIL = 60 * 30  # 30 хвилин в секундах
-
+@ratelimit(key='ip', rate='100/m', method='POST', block=True)
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -25,7 +26,7 @@ def logout_view(request):
     logout(request)
     return redirect('products:home')
 
-
+@ratelimit(key='ip', rate='100/m', method='POST', block=True)
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -51,6 +52,7 @@ def profile_view(request):
 
 
 @login_required
+@ratelimit(key='ip', rate='100/m', method='POST', block=True)
 def edit_profile_view(request):
     profile = get_object_or_404(Profile, user=request.user)
     # Ensure address exists
@@ -87,6 +89,7 @@ def edit_profile_view(request):
 
 
 @login_required
+@ratelimit(key='ip', rate='100/m', method='POST', block=True)
 def delete_profile_view(request):
     if request.method == 'POST':
         user = request.user

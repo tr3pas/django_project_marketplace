@@ -150,11 +150,11 @@ MEDIA_ROOT = BASE_DIR / "static" / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 
-)
+]
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

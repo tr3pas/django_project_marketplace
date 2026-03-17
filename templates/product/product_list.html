@@ -20,7 +20,7 @@
                     <p class="card-text">{{ product.description|truncatewords:15 }}</p>
                     <p class="card-text"><strong>Ціна:</strong> {{ product.price }} грн</p>
                     <p class="card-text"><strong>Рейтинг:</strong> {{ product.rating|floatformat:1 }} / 5.0</p>
-                    <a href="{% url 'products:product_details' product.id %}" class="btn btn-dark">Детальніше</a>
+                    <a href="{% url 'products:product_details' slug=product.slug %}" class="btn btn-dark">Детальніше</a>
                     <form method="post" action="{% url 'cart:add_cart' product.id %}" class="card-body d-flex flex-column mt-auto">
                         {% csrf_token %}
                         <input type="hidden" name="quantity" value="1">

@@ -8,7 +8,7 @@
 				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:home' %}">Головна</a></li>
 				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:product_list' %}">Усі товари</a></li>
 				{% for category in categories %}
-				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:product_list_by_category' category.id %}">{{ category.name }}</a></li>
+				<li class="list-inline-item"><a class="nav-link text-white" href="{% url 'products:product_list_by_category' category.slug %}">{{ category.name }}</a></li>
 				{% endfor %}
 			</ul>
 			<div class="d-flex align-items-center gap-3">
