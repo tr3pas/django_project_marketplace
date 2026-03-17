@@ -18,8 +18,12 @@
             <h1>{{ product.name }}</h1>
             <p>{{ product.description }}</p>
             <p><strong>Ціна:</strong> {{ product.price }} грн</p>
+            {% if product.color %}
             <p><strong>Колір:</strong> {{ product.color }}</p>
+            {% endif %}
+            {% if product.size %}
             <p><strong>Розмір:</strong> {{ product.size }}</p>
+            {% endif %}
             <p><strong>Рейтинг:</strong> {{ product.rating|floatformat:1 }} / 5.0</p>
             <a href="/" class="btn btn-dark" style="width: 175px;">Назад до магазину</a>
             <form method="post" action="{% url 'cart:add_cart' product.id %}" class="card-body d-flex flex-column mt-auto">
