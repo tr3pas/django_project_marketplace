@@ -5,6 +5,7 @@ from .models import CartItem, Cart
 from products.models import Product
 from products.views import _get_category_context
 
+
 def get_cart(request):
     if request.user.is_authenticated:
         cart, _ = Cart.objects.get_or_create(user=request.user)

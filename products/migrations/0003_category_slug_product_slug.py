@@ -6,20 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0002_product_image_product_rating_delete_productimage'),
+        ("products", "0002_product_image_product_rating_delete_productimage"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='slug',
-            field=models.SlugField(default='temp-slug', max_length=255, unique=True),
+            model_name="category",
+            name="slug",
+            field=models.SlugField(default="temp-slug", max_length=255, unique=True),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='product',
-            name='slug',
-            field=models.SlugField(default='temp-slug', max_length=255, unique=True),
+            model_name="product",
+            name="slug",
+            field=models.SlugField(default="temp-slug", max_length=255, unique=True),
             preserve_default=False,
         ),
     ]

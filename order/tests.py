@@ -18,11 +18,13 @@ class OrderTest(TestCase):
             category=self.category,
             name="T-shirt",
             price=50,
-            description= "Comfortable cotton t-shirt",
+            description="Comfortable cotton t-shirt",
             color="Red",
             size="M",
         )
-        self.order = Order.objects.create(user=self.user, total_price=self.product.price)
+        self.order = Order.objects.create(
+            user=self.user, total_price=self.product.price
+        )
 
     def test_create_order(self):
         self.assertEqual(self.order.user, self.user)
@@ -32,6 +34,6 @@ class OrderTest(TestCase):
             order=self.order,
             product=self.product,
             quantity=2,
-            product_price=self.product.price  # 👈 ВАЖНО
+            product_price=self.product.price,  # 👈 ВАЖНО
         )
         self.assertEqual(item.quantity, 2)

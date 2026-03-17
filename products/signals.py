@@ -10,9 +10,10 @@ from .views import CATEGORY_CACHE_KEY
 def clear_category_cache(sender, **kwargs):
     cache.delete(CATEGORY_CACHE_KEY)
 
+
 @receiver(post_save, sender=Product)
 @receiver(post_delete, sender=Product)
 def clear_product_cache(sender, instance, **kwargs):
-    cache.delete('products_all')
-    cache.delete(f'products_category_{instance.category_id}')
-    cache.delete(f'product_{instance.id}')
+    cache.delete("products_all")
+    cache.delete(f"products_category_{instance.category_id}")
+    cache.delete(f"product_{instance.id}")

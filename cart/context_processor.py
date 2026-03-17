@@ -5,10 +5,9 @@ def cart_item_count(request):
     if request.user.is_authenticated:
         try:
             cart = Cart.objects.get(user=request.user)
-            return {'cart_item_count': cart.items.count()}
+            return {"cart_item_count": cart.items.count()}
         except Cart.DoesNotExist:
-            return {'cart_item_count': 0}
+            return {"cart_item_count": 0}
     else:
-        cart = request.session.get('cart', {})
-        return {'cart_item_count': sum(cart.values())}
-    
+        cart = request.session.get("cart", {})
+        return {"cart_item_count": sum(cart.values())}

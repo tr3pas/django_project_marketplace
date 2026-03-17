@@ -9,7 +9,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
@@ -17,7 +17,9 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="products"
+    )
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(blank=True)
@@ -28,13 +30,12 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
 
-    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    image = models.ImageField(upload_to="product_images/", blank=True, null=True)
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
         super().save(*args, **kwargs)
-

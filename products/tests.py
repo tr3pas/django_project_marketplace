@@ -18,17 +18,13 @@ class ProductModelTest(TestCase):
 
     def test_create_product(self):
         product = Product.objects.create(
-            category=self.category,
-            name="Phone",
-            price=100
+            category=self.category, name="Phone", price=100
         )
         self.assertEqual(product.name, "Phone")
         self.assertEqual(product.category, self.category)
 
     def test_str(self):
         product = Product.objects.create(
-            category=self.category,
-            name="Laptop",
-            price=200
+            category=self.category, name="Laptop", price=200
         )
         self.assertEqual(str(product), product.name)
